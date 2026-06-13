@@ -53,4 +53,251 @@ html, body {
     align-items: center;
 }
 
-.preSearch input
+.preSearch input {
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 13px;
+    outline: none;
+    width: 150px;
+}
+
+.preSearch input::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.searchBtn {
+    background: transparent;
+    border: none;
+    color: white;
+    cursor: pointer;
+    padding: 0 10px;
+    font-size: 16px;
+    height: 30px;
+}
+
+/* 翻书容器 */
+.bookContainer {
+    position: absolute;
+    top: 46px;
+    left: 0;
+    right: 0;
+    bottom: 46px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: visible;
+}
+
+#flipbook {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3), 0 0 60px rgba(0, 0, 0, 0.1);
+}
+
+.stf__wrapper.centered {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+}
+
+.stf__wrapper.centered .stf__block {
+    position: relative !important;
+    left: auto !important;
+    right: auto !important;
+    margin: 0 auto !important;
+    transform: none !important;
+}
+
+.flip-page {
+    background: white;
+}
+
+.flip-page:not(.page-special) {
+    overflow: hidden;
+}
+
+.flip-page img {
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
+    display: block;
+}
+
+.flip-page.page-special img {
+    object-fit: contain;
+}
+
+.flip-page.page-special {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 8px;
+}
+
+.stf__wrapper.centered .flip-page img {
+    object-fit: fill !important;
+}
+
+/* 底部工具栏 */
+.fbToolBar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 46px;
+    background-color: #444444;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 100;
+}
+
+.buttonBar {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.buttonBar.left {
+    padding-left: 20px;
+}
+
+.buttonBar.right {
+    padding-right: 20px;
+}
+
+.tool-btn {
+    background: transparent;
+    border: none;
+    color: white;
+    cursor: pointer;
+    padding: 5px 10px;
+    font-size: 13px;
+    border-radius: 3px;
+    transition: background 0.2s;
+}
+
+.tool-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.pageBar {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.pageNumber {
+    color: white;
+    font-size: 14px;
+    min-width: 59px;
+    text-align: center;
+}
+
+.button {
+    background: transparent;
+    border: none;
+    color: white;
+    cursor: pointer;
+    padding: 5px 10px;
+    font-size: 13px;
+    border-radius: 3px;
+    height: 46px;
+    min-width: 42px;
+    transition: background 0.2s;
+}
+
+.button:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* ========== 移动端适配 ========== */
+@media (max-width: 768px) {
+    .fbTopBar {
+        height: 40px;
+    }
+
+    .searchBar {
+        display: none;
+    }
+
+    .bookContainer {
+        top: 40px;
+        bottom: 50px;
+    }
+
+    .fbToolBar {
+        height: 50px;
+        padding: 0 5px;
+    }
+
+    .buttonBar.left,
+    .buttonBar.right {
+        padding: 0;
+        gap: 2px;
+    }
+
+    .tool-btn {
+        padding: 5px 6px;
+        font-size: 12px;
+    }
+
+    .pageBar {
+        gap: 2px;
+    }
+
+    .button {
+        padding: 5px 6px;
+        font-size: 12px;
+        min-width: 32px;
+    }
+
+    .pageNumber {
+        font-size: 12px;
+        min-width: 50px;
+    }
+
+    #firstPageBtn,
+    #lastPageBtn {
+        display: none;
+    }
+}
+
+@media (max-width: 480px) {
+    .fbTopBar {
+        height: 36px;
+    }
+
+    .bookContainer {
+        top: 36px;
+        bottom: 46px;
+    }
+
+    .fbToolBar {
+        height: 46px;
+    }
+
+    .tool-btn {
+        padding: 4px 4px;
+        font-size: 11px;
+    }
+
+    .button {
+        padding: 4px 4px;
+        font-size: 11px;
+        min-width: 28px;
+    }
+
+    .pageNumber {
+        font-size: 11px;
+        min-width: 45px;
+    }
+
+    .buttonBar.left .tool-btn:nth-child(2),
+    .buttonBar.left .tool-btn:nth-child(3) {
+        display: none;
+    }
+
+    .buttonBar.right .tool-btn:nth-child(3) {
+        display: none;
+    }
+}
