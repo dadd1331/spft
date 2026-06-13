@@ -214,3 +214,102 @@ html, body {
 .button:hover {
     background: rgba(255, 255, 255, 0.1);
 }
+
+/* ========== 移动端适配 ========== */
+@media (max-width: 768px) {
+    /* 顶部栏缩小 */
+    .fbTopBar {
+        height: 40px;
+    }
+
+    /* 搜索框隐藏或缩小 */
+    .searchBar {
+        display: none;
+    }
+
+    /* 翻书容器调整 */
+    .bookContainer {
+        top: 40px;
+        bottom: 50px;
+    }
+
+    /* 底部工具栏优化 */
+    .fbToolBar {
+        height: 50px;
+        padding: 0 5px;
+    }
+
+    .buttonBar.left,
+    .buttonBar.right {
+        padding: 0;
+        gap: 2px;
+    }
+
+    .tool-btn {
+        padding: 5px 6px;
+        font-size: 12px;
+    }
+
+    .pageBar {
+        gap: 2px;
+    }
+
+    .button {
+        padding: 5px 6px;
+        font-size: 12px;
+        min-width: 32px;
+    }
+
+    .pageNumber {
+        font-size: 12px;
+        min-width: 50px;
+    }
+
+    /* 翻页按钮文字简化 */
+    #firstPageBtn,
+    #lastPageBtn {
+        display: none;
+    }
+}
+
+@media (max-width: 480px) {
+    /* 超小屏幕进一步优化 */
+    .fbTopBar {
+        height: 36px;
+    }
+
+    .bookContainer {
+        top: 36px;
+        bottom: 46px;
+    }
+
+    .fbToolBar {
+        height: 46px;
+    }
+
+    .tool-btn {
+        padding: 4px 4px;
+        font-size: 11px;
+    }
+
+    .button {
+        padding: 4px 4px;
+        font-size: 11px;
+        min-width: 28px;
+    }
+
+    .pageNumber {
+        font-size: 11px;
+        min-width: 45px;
+    }
+
+    /* 隐藏部分工具按钮 */
+    .buttonBar.left .tool-btn:nth-child(2),
+    .buttonBar.left .tool-btn:nth-child(3) {
+        display: none;
+    }
+
+    .buttonBar.right .tool-btn:nth-child(3) {
+        display: none;
+    }
+}

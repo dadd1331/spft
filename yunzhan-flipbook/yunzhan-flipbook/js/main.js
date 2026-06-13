@@ -41,18 +41,21 @@ const firstPageBtn = document.getElementById('firstPageBtn');
 const lastPageBtn = document.getElementById('lastPageBtn');
 
 let pageFlip;
+let currentVisiblePages = new Set([0, 1]); // 跟踪当前可见页面
 
 // 初始化
 totalPageNum.textContent = totalPages;
 createPages();
 initPageFlip();
 setupEventHandlers();
+preloadAdjacentPages(0); // 预加载封面附近页面
 
-// 创建所有页面
+// 创建所有页面（全部使用lazy loading）
 function createPages() {
     pages.forEach((pageSrc, index) => {
         const page = document.createElement('div');
         page.className = 'flip-page';
+        page.dataset.pageIndex = index; // 添加数据属性便于追踪
         
         // 第三页（索引2）添加特殊类，使用contain避免裁剪
         if (index === 2) {
@@ -62,7 +65,8 @@ function createPages() {
         const img = document.createElement('img');
         img.src = pageSrc;
         img.alt = `第${index + 1}页`;
-        img.loading = index < 6 ? 'eager' : 'lazy'; // 前6页立即加载
+        img.loading = 'lazy'; // 全部使用浏览器原生懒加载
+        img.decoding = 'async'; // 异步解码，不阻塞渲染
         
         page.appendChild(img);
         flipbookEl.appendChild(page);
@@ -71,20 +75,39 @@ function createPages() {
 
 // 初始化StPageFlip
 function initPageFlip() {
+    const containerWidth = window.innerWidth;
+    const containerHeight = window.innerHeight - 46 - 46; // 减去顶部栏和底部工具栏
+    
+    // 根据屏幕宽度动态计算书本尺寸
+    let bookWidth, bookHeight;
+    if (containerWidth <= 480) {
+        // 小屏手机：单页模式，宽度占满屏幕
+        bookWidth = Math.min(containerWidth - 20, 400);
+        bookHeight = Math.min(containerHeight - 20, 600);
+    } else if (containerWidth <= 768) {
+        // 平板/大屏手机
+        bookWidth = Math.min(containerWidth - 40, 600);
+        bookHeight = Math.min(containerHeight - 40, 450);
+    } else {
+        // 桌面端：双页模式
+        bookWidth = 800;
+        bookHeight = 600;
+    }
+    
     pageFlip = new St.PageFlip(flipbookEl, {
-        width: 800,
-        height: 600,
-        size: 'fixed',
+        width: bookWidth,
+        height: bookHeight,
+        size: 'stretch',           // 改为stretch自适应
         minWidth: 315,
         maxWidth: 1000,
         minHeight: 420,
         maxHeight: 1350,
         maxShadowOpacity: 0.5,
-        showCover: false,          // 禁用内置封面模式，使用自定义单页显示
+        showCover: false,
         mobileScrollSupport: false,
         swipeDistance: 30,
         clickEventForward: true,
-        usePortrait: false,        // 禁用portrait模式
+        usePortrait: containerWidth <= 768, // 小屏启用portrait单页模式
         startPage: 0,
         flippingTime: 800,
         useMouseEvents: true,
@@ -182,5 +205,23 @@ function setupEventHandlers() {
         }
     });
 }
+
+// 预加载相邻页面（提升翻页流畅度）
+function preloadAdjacentPages(currentIndex) {
+    const preloadRange = 2; // 预加载前后各2页
+    for (let i = Math.max(0, currentIndex - preloadRange); 
+         i <= Math.min(totalPages - 1, currentIndex + preloadRange); 
+         i++) {
+        const img = new Image();
+        img.src = pages[i];
+    }
+}
+
+// 监听翻页事件时预加载下一页
+pageFlip.on('flip', (e) => {
+    currentPageNum.textContent = e.data + 1;
+    applyCoverStyle(e.data);
+    preloadAdjacentPages(e.data); // 翻页后预加载新位置附近的页面
+});
 
 console.log(`云展网风格翻页书已加载，共${totalPages}页（StPageFlip 3D翻页）`);

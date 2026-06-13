@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://dadd1331.github.io/spft/yunzhan-flipbook/sitemap.xml
