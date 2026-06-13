@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAPFIT赛普飞特产品画册</title>
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://你的GitHub用户名.github.io/仓库名/">
+    <meta property="og:title" content="SAPFIT赛普飞特产品画册">
+    <meta property="og:description" content="佛山市赛普飞特科技有限公司 - 陶瓷行业数字化装饰技术和自动化装备">
+    <meta property="og:image" content="./images/page-1.jpg">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://你的GitHub用户名.github.io/仓库名/">
+    <meta property="twitter:title" content="SAPFIT赛普飞特产品画册">
+    <meta property="twitter:description" content="佛山市赛普飞特科技有限公司 - 陶瓷行业数字化装饰技术和自动化装备">
+    <meta property="twitter:image" content="./images/page-1.jpg">
+    
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- 顶部栏 -->
+    <div class="fbTopBar">
+        <div class="logoBar"></div>
+        <div class="topRightBar">
+            <div class="searchBar">
+                <div class="preSearch">
+                    <input type="text" placeholder="搜索">
+                </div>
+                <button class="searchBtn">🔍</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 翻书容器 -->
+    <div class="bookContainer">
+        <div id="flipbook">
+            <!-- 页面将通过JS动态生成 -->
+        </div>
+    </div>
+
+    <!-- 底部工具栏 -->
+    <div class="fbToolBar">
+        <div class="buttonBar left">
+            <button class="tool-btn">放大</button>
+            <button class="tool-btn">缩略图</button>
+            <button class="tool-btn">自动翻页</button>
+        </div>
+        <div class="pageBar">
+            <div class="pageNumber">
+                <span id="currentPageNum">1</span> / <span id="totalPageNum">28</span>
+            </div>
+            <button class="button" id="firstPageBtn">第一页</button>
+            <button class="button" id="prevBtn">上一页</button>
+            <button class="button" id="nextBtn">下一页</button>
+            <button class="button" id="lastPageBtn">最后一页</button>
+        </div>
+        <div class="buttonBar right">
+            <button class="tool-btn">全屏</button>
+            <button class="tool-btn">朋友分享</button>
+            <button class="tool-btn">打开声音</button>
+        </div>
+    </div>
+
+    <script src="js/page-flip.browser.min.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
