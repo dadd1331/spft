@@ -78,26 +78,41 @@ function initPageFlip() {
     const containerWidth = window.innerWidth;
     const containerHeight = window.innerHeight - 46 - 46; // 减去顶部栏和底部工具栏
     
-    // 根据屏幕宽度动态计算书本尺寸
+    // 根据屏幕宽度动态计算书本尺寸（匹配图片4:3比例）
+    const imageRatio = 4 / 3; // 图片宽高比
     let bookWidth, bookHeight;
+    
     if (containerWidth <= 480) {
-        // 小屏手机：单页模式，宽度占满屏幕
+        // 小屏手机：单页模式，宽度占满屏幕，高度按比例计算
         bookWidth = Math.min(containerWidth - 20, 400);
-        bookHeight = Math.min(containerHeight - 20, 600);
+        bookHeight = bookWidth / imageRatio; // 按4:3比例计算高度
     } else if (containerWidth <= 768) {
         // 平板/大屏手机
         bookWidth = Math.min(containerWidth - 40, 600);
-        bookHeight = Math.min(containerHeight - 40, 450);
+        bookHeight = bookWidth / imageRatio; // 按4:3比例计算高度
     } else {
-        // 桌面端：双页模式
-        bookWidth = 800;
-        bookHeight = 600;
+        // 桌面端双页模式：单页宽度不能超过可用宽度的一半
+        const availableWidth = containerWidth - 60;
+        const availableHeight = containerHeight - 30;
+        
+        // 双页模式下，单页最大宽度 = 可用宽度 / 2
+        const maxSinglePageWidth = availableWidth / 2;
+        
+        // 先按高度计算宽度
+        bookHeight = availableHeight;
+        bookWidth = bookHeight * imageRatio;
+        
+        // 如果宽度超出单页限制，则按宽度重新计算高度
+        if (bookWidth > maxSinglePageWidth) {
+            bookWidth = maxSinglePageWidth;
+            bookHeight = bookWidth / imageRatio;
+        }
     }
     
     pageFlip = new St.PageFlip(flipbookEl, {
         width: bookWidth,
         height: bookHeight,
-        size: 'stretch',           // 改为stretch自适应
+        size: 'fixed',             // 固定比例，不拉伸图片
         minWidth: 315,
         maxWidth: 1000,
         minHeight: 420,
