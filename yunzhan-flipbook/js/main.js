@@ -1,34 +1,34 @@
 // 云展网风格翻页书 - 使用StPageFlip实现真正3D翻页
 const totalPages = 28;
 const pages = [
-    'pages/page-1.jpg',   // 封面（SAPFIT赛普飞特技术）
-    'pages/page-2.jpg',
-    'pages/page-3.jpg',
-    'pages/page-4.jpg',
-    'pages/page-5.jpg',
-    'pages/page-6.jpg',
-    'pages/page-7.jpg',
-    'pages/page-8.jpg',
-    'pages/page-9.jpg',
-    'pages/page-10.jpg',
-    'pages/page-11.jpg',
-    'pages/page-12.jpg',
-    'pages/page-13.jpg',
-    'pages/page-14.jpg',
-    'pages/page-15.jpg',
-    'pages/page-16.jpg',
-    'pages/page-17.jpg',
-    'pages/page-18.jpg',
-    'pages/page-19.jpg',
-    'pages/page-20.jpg',
-    'pages/page-21.jpg',
-    'pages/page-22.jpg',
-    'pages/page-23.jpg',
-    'pages/page-24.jpg',
-    'pages/page-25.jpg',
-    'pages/page-26.jpg',
-    'pages/back.jpg',     // 倒数第二页（联系方式）
-    'pages/cover.jpg'     // 尾页（原封面图）
+    'images/page_2.png',
+    'images/page_3.png',
+    'images/page_4.png',
+    'images/page_5.png',
+    'images/page_6.png',
+    'images/page_7.png',
+    'images/page_8.png',
+    'images/page_9.png',
+    'images/page_10.png',
+    'images/page_11.png',
+    'images/page_12.png',
+    'images/page_13.png',
+    'images/page_14.png',
+    'images/page_15.png',
+    'images/page_16.png',
+    'images/page_17.png',
+    'images/page_18.png',
+    'images/page_19.png',
+    'images/page_20.png',
+    'images/page_21.png',
+    'images/page_22.png',
+    'images/page_23.png',
+    'images/page_24.png',
+    'images/page_25.png',
+    'images/page_26.png',
+    'images/page_27.png',
+    'images/page_28.png',
+    'images/page_1.png'
 ];
 
 // DOM元素
@@ -78,27 +78,36 @@ function initPageFlip() {
     const containerWidth = window.innerWidth;
     const containerHeight = window.innerHeight - 46 - 46; // 减去顶部栏和底部工具栏
     
-    // 根据屏幕宽度动态计算书本尺寸（匹配图片4:3比例）
-    const imageRatio = 4 / 3; // 图片宽高比
+    // 根据实际图片比例计算（切割后单页为4:3）
+    // 先加载第一张图片获取真实比例
+    const tempImg = new Image();
+    tempImg.src = pages[0];
+    const imageRatio = tempImg.naturalWidth / tempImg.naturalHeight || 1.33; // 默认4:3
     let bookWidth, bookHeight;
     
-    if (containerWidth <= 480) {
-        // 小屏手机：单页模式，宽度占满屏幕，高度按比例计算
-        bookWidth = Math.min(containerWidth - 20, 400);
-        bookHeight = bookWidth / imageRatio; // 按4:3比例计算高度
-    } else if (containerWidth <= 768) {
-        // 平板/大屏手机
-        bookWidth = Math.min(containerWidth - 40, 600);
-        bookHeight = bookWidth / imageRatio; // 按4:3比例计算高度
+    if (containerWidth <= 768) {
+        // 手机端/平板：强制单页模式（portrait）
+        const maxWidth = containerWidth - 20;
+        const maxHeight = containerHeight - 20;
+        
+        // 先按宽度计算高度
+        bookWidth = Math.min(maxWidth, 600);
+        bookHeight = bookWidth / imageRatio;
+        
+        // 如果高度超出限制，则按高度重新计算宽度
+        if (bookHeight > maxHeight) {
+            bookHeight = maxHeight;
+            bookWidth = bookHeight * imageRatio;
+        }
     } else {
-        // 桌面端双页模式：单页宽度不能超过可用宽度的一半
-        const availableWidth = containerWidth - 60;
-        const availableHeight = containerHeight - 30;
+        // 桌面端双页模式
+        const availableWidth = containerWidth - 80;  // 左右留白
+        const availableHeight = containerHeight - 40; // 上下留白
         
         // 双页模式下，单页最大宽度 = 可用宽度 / 2
         const maxSinglePageWidth = availableWidth / 2;
         
-        // 先按高度计算宽度
+        // 先按高度计算单页宽度
         bookHeight = availableHeight;
         bookWidth = bookHeight * imageRatio;
         
@@ -113,9 +122,9 @@ function initPageFlip() {
         width: bookWidth,
         height: bookHeight,
         size: 'fixed',             // 固定比例，不拉伸图片
-        minWidth: 315,
+        minWidth: 200,
         maxWidth: 1000,
-        minHeight: 420,
+        minHeight: 150,
         maxHeight: 1350,
         maxShadowOpacity: 0.5,
         showCover: false,
@@ -141,26 +150,25 @@ function initPageFlip() {
     setTimeout(() => applyCoverStyle(0), 100);
 }
 
-// 封面/封底时单页居中显示
+// 根据屏幕模式应用页面样式
 function applyCoverStyle(pageIndex) {
     const isFirstPage = pageIndex === 0;
     const isLastPage = pageIndex === totalPages - 1;
+    const isPortrait = window.innerWidth <= 768; // 判断是否单页模式
     
     setTimeout(() => {
         const blocks = document.querySelectorAll('.stf__block');
         if (!blocks.length) return;
         
-        if (isFirstPage || isLastPage) {
-            // 封面/封底：单页居中显示
+        if (isPortrait || isFirstPage || isLastPage) {
+            // 单页模式或封面/封底：居中显示
             const wrapper = document.querySelector('.stf__wrapper');
             if (!wrapper) return;
             
-            // 设置wrapper为flex布局并居中
             wrapper.style.display = 'flex';
             wrapper.style.justifyContent = 'center';
             wrapper.style.alignItems = 'center';
             
-            // 对所有block应用居中样式
             blocks.forEach(block => {
                 block.style.position = 'relative';
                 block.style.left = 'auto';
@@ -171,7 +179,7 @@ function applyCoverStyle(pageIndex) {
                 block.style.transform = 'none';
             });
         } else {
-            // 内容页：恢复双页显示
+            // 双页模式内容页：恢复双页布局
             blocks.forEach(block => {
                 block.style.position = '';
                 block.style.left = '';

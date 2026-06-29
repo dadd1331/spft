@@ -297,6 +297,25 @@ html, body {
         font-size: 11px;
         min-width: 28px;
     }
+}
+
+/* ========== 翻页书页面样式 ========== */
+.flip-page {
+    background: transparent;
+    overflow: hidden;
+}
+
+.flip-page img {
+    width: 100%;
+    height: 100%;
+    object-fit: fill; /* 填满容器，因为容器比例已匹配图片4:3 */
+    display: block;
+}
+
+/* 特殊页面（如第3页）使用contain避免裁剪 */
+.page-special img {
+    object-fit: contain;
+}
 
     .pageNumber {
         font-size: 11px;
